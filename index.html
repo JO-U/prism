@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>prism</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="index0.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        
+        <script src="https://kit.fontawesome.com/6c2c5a801c.js" crossorigin="anonymous"></script>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+		<!-- map -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://unpkg.com/topojson-client@3"></script>
+    </head>
+    
+    <body>
+        <main class="animated-gradient">
+            <div id="hero">
+                <div class="heroBg"></div>
+                <h1>prism</h1>
+                <p class="herotext bottomLeft">
+                    Navigating LGBTQ+ Discrimination<br>Across European Borders
+                </p>
+                <p class="herotext bottomRight">
+                    Project for the exam Open Access<br>and Digital Ethics, 2022/2023
+                </p>
+            </div>
+
+            <div id="missionStatement">
+                <p>LGBTQ+ individuals across Europe still face systemic barriers in healthcare, employment, and education. </p>
+                <p>PRISM analyzes open datasets to uncover <b>geographical patterns of inequality</b> and map the current state of social inclusion in <b>different European countries</b>.</p>
+            </div>
+
+            <div id="dataSources">
+                <div id="sectionLeft">
+                    <h2>Our data sources</h2>
+                    <p>To map LGBTQ+ disparities in Europe, we cross-reference multiple open-access datasets.</p>
+                    <p>These resources provide the empirical foundation needed to analyze regional legal frameworks, societal challenges, and lived experiences.</p>
+                    <a href="" target="_blank" class="link">Learn more</a>
+                </div>
+
+                <div id="sectionRight">
+                    <div class="scroll-container">
+                        <div class="container">
+                            <div class="card">
+                                <div class="card-content">
+                                    <span class="category">RAINBOW MAP</span>
+                                    <span class="date">MAY 2025</span>
+                                    <h3 class="title">RAINBOW EUROPE - MARRIAGE AND ADOPTION</h3>
+                                </div>
+
+                                <button class="card-btn" aria-label="Open details">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>      
+                    </div>
+                </div>
+            </div>
+
+            <div id="analysis">
+                <h3>To map LGBTQ+ disparities in Europe, we cross-referenced multiple open access datasets</h3>
+            </div>
+
+            <!-- Prima visualizzazione -->
+            <div id="vis1">
+                <div id="introVis1">
+                    <h2>Public opinion vs lived experience</h2>
+                    <p><em>How accepting is public opinion across Europe? Does public acceptance translate into everyday experiences?</em></p>
+                    <p>Here is what people think is happening (Eurobarometer), next to what LGBTQ+ people actually report living through (FRA Survey III). For each country, the first bar shows discrimination reported by LGBTQ+ people in 2023 across everyday life, employment, healthcare, and education, while the second bar reflects broader public opinion on LGBTQ+ rights and issues.</p>
+                    <p>Side-by-side, these datasets reveal the gaps between societal perception and daily reality across the European Union.</p>
+                    <p>How to use: Select a topic (discrimination in everyday life, employment, healthcare, or education), then choose one of the corresponding public opinion questions to compare.</p>
+                </div>
+
+                <div class="vis-sticky-panel">
+                    <div class="vis-controls">
+                        <div class="control-group">
+                            <label for="lgbtq-topic">LGBTQ+ Experiences (Eurobarometer)</label>
+                            <select id="lgbtq-topic">
+                                <option value="felt_12_months">Discrimination felt in the last 12 months</option>
+                                <option value="employment">Discrimination in employment</option>
+                                <option value="healthcare">Discrimination in healthcare</option>
+                                <option value="education">Discrimination in education</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="public-opinion-topic">Public Opinion (FRA Survey III)</label>
+                            <select id="public-opinion-topic"></select>
+                        </div>
+                    </div>
+
+                    <div class="vis-legend">
+                        <div class="legend-left">
+                            <span class="legend-box" style="background-color: #e5523d;"></span>
+                            <span class="legend-label">Discrimination Felt</span>
+                        </div>
+                        <div class="legend-right" id="public-opinion-legend"></div>
+                    </div>
+                </div>
+
+                <div id="countries-chart-list" class="chart-list-container"></div>
+            </div>
+
+            <!-- Seconda visualizzazione -->
+           <div id="vis2">
+            <div id="introVis2">
+                <h2>From Laws to Lives: Rainbow Families across Europe</h2>
+                <p>This map traces the legal recognition of same-sex and different-sex couples regarding marriage, registered partnerships, cohabitation, and adoption.</p>
+                <p>The visualization draws from two distinct sources: the Laws and Families dataset, which tracks 20 European countries from 1989 to 2016, and Rainbow Europe, which reflects the current legal landscape in 2024. The remaining gap (2016–2024) highlights a critical area for future legal research and updates.</p>
+                <p>How to use: Move the slider on the left to see how legislation changed through the years, click on a country to have all the details.</p>
+            </div>			
+            <div class="app-container">  
+                <!-- Top Nav Controls -->
+                <div class="top-controls">
+                <div class="tab-selector">
+                    <button id="btn-marriage" class="tab-btn active" onclick="setTopic('marriage')">Marriage Equality</button>
+                    <button id="btn-adoption" class="tab-btn inactive" onclick="setTopic('adoption')">Adoption</button>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="legend">
+                    <div class="legend-item"><span class="box red"></span> Not Granted</div>
+                    <div class="legend-item"><span class="box orange"></span> Partial</div>
+                    <div class="legend-item"><span class="box green"></span> Granted</div>
+                    <div class="legend-item"><span class="box grey"></span> No Data</div>
+                </div>
+                </div>
+
+                <!-- Vertical Timeline -->
+                <div class="timeline-container">
+                <div class="timeline-track">
+                    <div class="timeline-thumb" id="slider-thumb"></div>
+                </div>
+                <div class="timeline-years" id="years-list"></div>
+                </div>
+
+                <!-- Interactive SVG Canvas -->
+                <div id="map-container"></div>
+                <div id="tooltip" class="tooltip"></div>
+
+                <!-- Detailed Section below Map -->
+                <div id="details-section" class="details-section">
+                <h2 id="details-header" class="details-header">Select a country on the map</h2>
+                <div id="details-badges" class="details-badges"></div>
+                </div>
+            </div>
+           </div>
+            <footer>
+                <h3>prism</h3>
+                <div class="right">
+                    <div class="links">
+                        <a href="#hero">Home</a>
+                        <a href="#dataSources">Data Sources</a>
+                        <a href="#vis1">Visualizations</a>
+                    </div>
+                    <p>Project for the exam Open Access and Digital Ethics, 2022/2023</p>
+                </div>
+            </footer>
+			<script src="https://d3js.org/d3.v7.min.js"></script>
+            <script src="localData.js"></script>
+            <script src="vis1.js"></script>
+            <script src="vis2.js"></script>
+            <script src="vis3.js"></script>
+        </main>
+    </body>
+</html>
