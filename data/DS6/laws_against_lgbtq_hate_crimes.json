@@ -1,0 +1,296 @@
+{
+  "Row0" : {
+    "Country" : "Albania",
+    "Hate crime law" : "2013",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2013",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row1" : {
+    "Country" : "Austria",
+    "Hate crime law" : "2016",
+    "Hate crime law name" : "Austrian criminal code",
+    "Hate speech law" : "2016",
+    "Hate Speech law name" : "Austrian criminal code"
+  },
+  "Row2" : {
+    "Country" : "Belarus",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row3" : {
+    "Country" : "Belgium",
+    "Hate crime law" : "1905",
+    "Hate crime law name" : "wet ter bestrijding van bepaalde vormen van discriminatie",
+    "Hate speech law" : "1905",
+    "Hate Speech law name" : "wet ter bestrijding van bepaalde vormen van discriminatie"
+  },
+  "Row4" : {
+    "Country" : "Bosnia and Herzegovina",
+    "Hate crime law" : "2016",
+    "Hate crime law name" : "Law on amendments to the Criminal Code of Federation of Bosnia and Herzegovina, Law on amendments to the Criminal Code of Republika Srpska and Law on amendments to the Criminal Code of Brcko District",
+    "Hate speech law" : "2017",
+    "Hate Speech law name" : "Adoption of new Criminal Code of Republika Srpska"
+  },
+  "Row5" : {
+    "Country" : "Bulgaria",
+    "Hate crime law" : "2023",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2023",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row6" : {
+    "Country" : "Croatia",
+    "Hate crime law" : "2013",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2013",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row7" : {
+    "Country" : "Cyprus",
+    "Hate crime law" : "2017",
+    "Hate crime law name" : "Cyprus Penal Code, Chapter 154",
+    "Hate speech law" : "2015",
+    "Hate Speech law name" : "Cyprus Penal Code, Chapter 154"
+  },
+  "Row8" : {
+    "Country" : "Czech Republic",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row9" : {
+    "Country" : "Estonia",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "2006",
+    "Hate Speech law name" : "Penal Code"
+  },
+  "Row10" : {
+    "Country" : "Finland",
+    "Hate crime law" : "2011",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2011",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row11" : {
+    "Country" : "France",
+    "Hate crime law" : "unclear",
+    "Hate crime law name" : "unclear",
+    "Hate speech law" : "unclear",
+    "Hate Speech law name" : "unclear"
+  },
+  "Row12" : {
+    "Country" : "Germany",
+    "Hate crime law" : "2023",
+    "Hate crime law name" : "Law for the revision of the sanctions law none substitute prison sentence, sentencing, conditions and instructions as well as placement in a rehabilitation center",
+    "Hate speech law" : "2023",
+    "Hate Speech law name" : "Law for the revision of the sanctions law none substitute prison sentence, sentencing, conditions and instructions as well as placement in a rehabilitation center"
+  },
+  "Row13" : {
+    "Country" : "Greece",
+    "Hate crime law" : "2019",
+    "Hate crime law name" : "Article 81A of the Penal Code (Law 4619/2019) as amended by Article 14 of Law 5090/2024",
+    "Hate speech law" : "2014",
+    "Hate Speech law name" : "Law 927/1979 as amended by Law 4285/2014"
+  },
+  "Row14" : {
+    "Country" : "Hungary",
+    "Hate crime law" : "2012",
+    "Hate crime law name" : "Act No. C of 2012 on the Criminal Code",
+    "Hate speech law" : "2012",
+    "Hate Speech law name" : "Act No. C of 2012 on the Criminal Code"
+  },
+  "Row15" : {
+    "Country" : "Iceland",
+    "Hate crime law" : "1940, as amended 2022",
+    "Hate crime law name" : "General Penal Code",
+    "Hate speech law" : "2013",
+    "Hate Speech law name" : "Almenn hegningarlÃ¶g nr. 19/1940 (The General Penal Code) LÃ¶g um breytingu Ã¡ almennum hegningarlÃ¶gum, nr. 19 12. febrÃºar 1940, meÃ° sÃ­Ã°ari breytingum (mismunun Ã¡ grundvelli kynvitundar og viÃ°bÃ³tarbÃ³kun viÃ° samning EvrÃ³purÃ¡Ã°sins um tÃ¶lvubrot) nr. 13/2014.+ (Amendment No. 13/2014) // LÃ¶g um fjÃ¶lmiÃ°la nr. 38/2011(LÃ¶g um breytingu Ã¡ lÃ¶gum um fjÃ¶lmiÃ°la, nr. 38/2011 (eignarhaldsreglur og endurbÃ¦tur) nr. 54/2011 (Amendment No. 54/2011)"
+  },
+  "Row16" : {
+    "Country" : "Ireland",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "1905",
+    "Hate Speech law name" : "Prohibition of Incitement to Hatred Act, 1989"
+  },
+  "Row17" : {
+    "Country" : "Italy",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row18" : {
+    "Country" : "Latvia",
+    "Hate crime law" : "1998, as amended 2014",
+    "Hate crime law name" : "Criminal Code of Latvia",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row19" : {
+    "Country" : "Liechtenstein",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "1988",
+    "Hate Speech law name" : "Criminal Code of 24 June 1987 (StGB) none Strafgesetzbuch vom 24. Juni 1987 (StGB)"
+  },
+  "Row20" : {
+    "Country" : "Lithuania",
+    "Hate crime law" : "1905",
+    "Hate crime law name" : "Criminal Code of the Republic of Lithuania",
+    "Hate speech law" : "1905",
+    "Hate Speech law name" : "Criminal Code of the Republic of Lithuania"
+  },
+  "Row21" : {
+    "Country" : "Malta",
+    "Hate crime law" : "2012",
+    "Hate crime law name" : "ACT No. VIII of 2012. AN ACT to amend the Criminal Code, Cap. 9",
+    "Hate speech law" : "2012",
+    "Hate Speech law name" : "ACT No. VIII of 2012. AN ACT to amend the Criminal Code, Cap. 9"
+  },
+  "Row22" : {
+    "Country" : "Moldova",
+    "Hate crime law" : "2022",
+    "Hate crime law name" : "Criminal Code, amendment",
+    "Hate speech law" : "2022",
+    "Hate Speech law name" : "Criminal Code, amendment"
+  },
+  "Row23" : {
+    "Country" : "Montenegro",
+    "Hate crime law" : "2014",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2014",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row24" : {
+    "Country" : "Netherlands",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "(1881, as amended 2007",
+    "Hate Speech law name" : "Wetboek van Strafrecht (Penal Code)"
+  },
+  "Row25" : {
+    "Country" : "North Macedonia",
+    "Hate crime law" : "2018",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row26" : {
+    "Country" : "Norway",
+    "Hate crime law" : "2015",
+    "Hate crime law name" : "Norwegian criminal code 2015",
+    "Hate speech law" : "2015",
+    "Hate Speech law name" : "Norwegian criminal code 2015"
+  },
+  "Row27" : {
+    "Country" : "Poland",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row28" : {
+    "Country" : "Portugal",
+    "Hate crime law" : "2007",
+    "Hate crime law name" : "Lei 59/2007",
+    "Hate speech law" : "2007",
+    "Hate Speech law name" : "Lei 59/2007"
+  },
+  "Row29" : {
+    "Country" : "Romania",
+    "Hate crime law" : "unknown",
+    "Hate crime law name" : "unknown",
+    "Hate speech law" : "unknown",
+    "Hate Speech law name" : "unknown"
+  },
+  "Row30" : {
+    "Country" : "Serbia",
+    "Hate crime law" : "2012",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2014",
+    "Hate Speech law name" : "1. Anti Discrimination Law; 2. Law on media"
+  },
+  "Row31" : {
+    "Country" : "Slovakia",
+    "Hate crime law" : "2013",
+    "Hate crime law name" : "Act No. 300/2005 Criminal law",
+    "Hate speech law" : "2017",
+    "Hate Speech law name" : "Act No. 300/2005 Criminal law"
+  },
+  "Row32" : {
+    "Country" : "Slovenia",
+    "Hate crime law" : "2023",
+    "Hate crime law name" : "Criminal Code",
+    "Hate speech law" : "2008",
+    "Hate Speech law name" : "Criminal Code"
+  },
+  "Row33" : {
+    "Country" : "Spain",
+    "Hate crime law" : "1995",
+    "Hate crime law name" : "Ley OrgÃ¡nica 10/1995, de 23 de noviembre, del CÃ³digo Penal",
+    "Hate speech law" : "1995",
+    "Hate Speech law name" : "Ley OrgÃ¡nica 10/1995, de 23 de noviembre, del CÃ³digo Penal"
+  },
+  "Row34" : {
+    "Country" : "Sweden",
+    "Hate crime law" : "2003",
+    "Hate crime law name" : "Brottsbalk (1962:700)",
+    "Hate speech law" : "2003",
+    "Hate Speech law name" : "Brottsbalk (1962:700)"
+  },
+  "Row35" : {
+    "Country" : "Switzerland",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "2020",
+    "Hate Speech law name" : "Code pÃ©nal & Code pÃ©nal militaire"
+  },
+  "Row36" : {
+    "Country" : "Turkey",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row37" : {
+    "Country" : "Ukraine",
+    "Hate crime law" : "none",
+    "Hate crime law name" : "none",
+    "Hate speech law" : "none",
+    "Hate Speech law name" : "none"
+  },
+  "Row38" : {
+    "Country" : "United Kingdom",
+    "Hate crime law" : "1986",
+    "Hate crime law name" : "Public Order Act",
+    "Hate speech law" : "1986",
+    "Hate Speech law name" : "Public Order Act"
+  },
+  "Row39" : {
+    "Country" : "United Kingdom",
+    "Hate crime law" : "1987",
+    "Hate crime law name" : "The Public Order (Northern Ireland) Order",
+    "Hate speech law" : "1987",
+    "Hate Speech law name" : "The Public Order (Northern Ireland) Order"
+  },
+  "Row40" : {
+    "Country" : "United Kingdom",
+    "Hate crime law" : "2003",
+    "Hate crime law name" : "Criminal Justice Act 2003",
+    "Hate speech law" : "2003",
+    "Hate Speech law name" : "Criminal Justice Act 2003"
+  },
+  "Row41" : {
+    "Country" : "United Kingdom",
+    "Hate crime law" : "2024",
+    "Hate crime law name" : "the Hate Crime and Public Order (Scotland) Act",
+    "Hate speech law" : "2024",
+    "Hate Speech law name" : "the Hate Crime and Public Order (Scotland) Act"
+  }
+}
