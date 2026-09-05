@@ -10,15 +10,6 @@ let currentTopic = 'marriage'; // 'marriage' o 'adoption'
 let selectedCountryCode = null;
 let selectedCountryName = null;
 
-const localDataMap = window.PRISM_LOCAL_DATA || {};
-
-function loadLocalCsv(filePath) {
-  if (window.location.protocol === 'file:' && localDataMap[filePath]) {
-    return Promise.resolve(d3.csvParse(localDataMap[filePath]));
-  }
-  return d3.csv(filePath);
-}
-
 // Strutture dati globali
 let normalizedData = {}; // { CountryName: { Year: { ...dettagli... } } }
 let countryNameToId = {};  // Mappatura Nomi paesi -> Codici ISO Numerici per D3
@@ -39,22 +30,23 @@ const countryIsoMapping = {
   "Turkey": "792", "Ukraine": "804", "United Kingdom": "826"
 };
 
-// Funzione helper per ripulire i nomi dei paesi nei CSV (es. "Austria (a)" -> "Austria")
+// Helper per ripulire i nomi dei paesi nei CSV (es. "Austria (a)" -> "Austria")
 function cleanCountryName(name) {
   if (!name) return "";
   return name.replace(/\s*\([a-z0-9]+\)/gi, "").trim();
 }
 
-// Funzione helper per converte valori Yes/No/1/0 in Booleani
+// Helper per convertire Yes/No/1/0 in Booleani
 function parseBoolean(value) {
   if (value === null || value === undefined) return false;
   const str = String(value).trim().toLowerCase();
   return str === 'yes' || str === '1' || str === 'true';
 }
 
-// Inizializzazione della Timeline
+// Inizializzazione visiva della Timeline
 function initTimeline() {
   const yearsContainer = document.getElementById('years-list');
+  if (!yearsContainer) return;
   yearsContainer.innerHTML = '';
   
   years.forEach(year => {
@@ -86,10 +78,10 @@ const projection = d3.geoAzimuthalEqualArea()
 
 const path = d3.geoPath().projection(projection);
 
-// Caricamento dei file CSV e del file Geografico TopoJSON
+// Caricamento HTTP nativo dei file CSV e del file Geografico TopoJSON
 Promise.all([
-  loadLocalCsv("data/DS4/marriage_and_parenting_1989_2016.csv"),
-  loadLocalCsv("data/DS3/marriage_and_parenting_2024.csv"),
+  d3.csv("data/DS4/marriage_and_parenting_1989_2016.csv"),
+  d3.csv("data/DS3/marriage_and_parenting_2024.csv"),
   d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
 ]).then(([data1989_2016, data2024, geoData]) => {
   
@@ -98,7 +90,7 @@ Promise.all([
 
   const countries = topojson.feature(geoData, geoData.objects.countries);
 
-  // Renderizza la mappa
+  // Renderizza la mappa europea
   svg.selectAll("path")
     .data(countries.features)
     .enter()
@@ -108,7 +100,6 @@ Promise.all([
     .attr("class", "country-path")
     .style("fill", "#FFFFFF")
     .on("click", (event, d) => {
-      // Trova il nome del paese dal codice ISO
       const countryName = Object.keys(countryIsoMapping).find(
         key => countryIsoMapping[key] === String(d.id).padStart(3, '0')
       );
@@ -117,7 +108,7 @@ Promise.all([
         selectedCountryCode = d.id;
         selectedCountryName = countryName;
         
-        // Evidenzia lo stato selezionato
+        // Evidenzia visivamente lo stato selezionato
         svg.selectAll("path").classed("selected", false);
         d3.select(event.currentTarget).classed("selected", true);
 
@@ -127,12 +118,12 @@ Promise.all([
 
   setYear(1989);
 }).catch(error => {
-  console.error("Errore nel caricamento dei dati:", error);
+  console.error("Errore nel caricamento dei dati di rete:", error);
 });
 
-// Elaborazione e Normalizzazione dei Dati dei due CSV
+// Elaborazione e Normalizzazione dei Dati CSV
 function processCSVData(data1989_2016, data2024) {
-  // 1. Processa dati 1989-2016
+  // 1. Dati 1989-2016
   data1989_2016.forEach(row => {
     const rawCountry = row["Jurisdiction"] || row["Country"];
     const country = cleanCountryName(rawCountry);
@@ -152,7 +143,7 @@ function processCSVData(data1989_2016, data2024) {
     };
   });
 
-  // 2. Processa dati 2024
+  // 2. Dati 2024
   data2024.forEach(row => {
     const rawCountry = row["Country"] || row["Jurisdiction"];
     const country = cleanCountryName(rawCountry);
@@ -171,32 +162,28 @@ function processCSVData(data1989_2016, data2024) {
     };
   });
 
-  // Registra la mappa dei codici
   Object.keys(countryIsoMapping).forEach(name => {
     countryNameToId[name] = countryIsoMapping[name];
   });
 }
 
-// Calcolo Colore in base ai provvedimenti approvati
+// Calcolo della tonalità di colore in base ai diritti concessi
 function CalculateColor(countryName, year, topic) {
   const countryHistory = normalizedData[countryName];
-  if (!countryHistory) return "#95A5A6"; // No Data (Grigio)
+  if (!countryHistory) return "#95A5A6"; // Grigio (No Data)
 
-  // Trova lo stato dati più recente per l'anno selezionato
   const availableYears = Object.keys(countryHistory).map(Number).sort((a, b) => a - b);
   const activeYear = availableYears.filter(y => y <= year).pop();
 
-  if (!activeYear) return "#95A5A6"; // No Data
+  if (!activeYear) return "#95A5A6";
 
   const details = countryHistory[activeYear];
 
   if (topic === 'marriage') {
-    // Matrimonio egualitario full
     if (details.marriage_same_sex && details.adoption_marriage) {
-      return "#2ECC71"; // Verde acceso
+      return "#2ECC71"; // Verde acceso (Piena eguaglianza)
     }
 
-    // Conteggio tutele matrimoniali/unioni
     let passed = 0;
     let total = 3;
     if (details.marriage_same_sex) passed++;
@@ -204,12 +191,11 @@ function CalculateColor(countryName, year, topic) {
     if (details.cohabitation) passed++;
 
     const ratio = passed / total;
-    if (ratio === 0) return "#E74C3C"; // Rosso Intenso
+    if (ratio === 0) return "#E74C3C"; // Rosso
     if (ratio <= 0.34) return "#E67E22"; // Rosso-Arancio
-    return "#F39C12"; // Arancio-Giallo
+    return "#F39C12"; // Arancio
   } 
   else {
-    // Tema Adoption
     if (details.adoption_marriage && details.marriage_same_sex) {
       return "#2ECC71"; // Verde acceso
     }
@@ -235,13 +221,13 @@ function updateMapColors() {
       key => countryIsoMapping[key] === isoCode
     );
 
-    if (!countryName) return "#FFFFFF"; // Fuori Europa o non tracciato
+    if (!countryName) return "#FFFFFF";
 
     return CalculateColor(countryName, selectedYear, currentTopic);
   });
 }
 
-// Imposta l'anno corrente e aggiorna la UI
+// Imposta l'anno attivo
 function setYear(year) {
   selectedYear = year;
   
@@ -257,11 +243,15 @@ function setYear(year) {
     }
   });
 
-  const trackHeight = document.querySelector('.timeline-track').clientHeight;
-  const step = trackHeight / (years.length - 1);
-  const thumbTop = selectedIndex * step;
-  
-  document.getElementById('slider-thumb').style.top = `${thumbTop}px`;
+  const trackContainer = document.querySelector('.timeline-track');
+  if (trackContainer) {
+    const trackHeight = trackContainer.clientHeight;
+    const step = trackHeight / (years.length - 1);
+    const thumbTop = selectedIndex * step;
+    
+    const thumb = document.getElementById('slider-thumb');
+    if (thumb) thumb.style.top = `${thumbTop}px`;
+  }
 
   updateMapColors();
   if (selectedCountryName) {
@@ -269,12 +259,15 @@ function setYear(year) {
   }
 }
 
-// Imposta il topic corrente (Marriage / Adoption)
+// Imposta il tema attivo (marriage / adoption)
 function setTopic(topic) {
   currentTopic = topic;
   
-  document.getElementById('btn-marriage').className = topic === 'marriage' ? 'tab-btn active' : 'tab-btn inactive';
-  document.getElementById('btn-adoption').className = topic === 'adoption' ? 'tab-btn active' : 'tab-btn inactive';
+  const btnMarriage = document.getElementById('btn-marriage');
+  const btnAdoption = document.getElementById('btn-adoption');
+
+  if (btnMarriage) btnMarriage.className = topic === 'marriage' ? 'tab-btn active' : 'tab-btn inactive';
+  if (btnAdoption) btnAdoption.className = topic === 'adoption' ? 'tab-btn active' : 'tab-btn inactive';
   
   updateMapColors();
   if (selectedCountryName) {
@@ -282,9 +275,11 @@ function setTopic(topic) {
   }
 }
 
-// Renderizza la Sezione Dettaglio sotto la mappa
+// Renderizza il pannello dettagli sotto la mappa
 function renderDetailSection() {
   const container = document.getElementById('details-section');
+  if (!container) return;
+
   if (!selectedCountryName) {
     container.style.display = 'none';
     return;
