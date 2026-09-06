@@ -170,18 +170,18 @@ function processCSVData(data1989_2016, data2024) {
 // Calcolo della tonalità di colore in base ai diritti concessi
 function CalculateColor(countryName, year, topic) {
   const countryHistory = normalizedData[countryName];
-  if (!countryHistory) return "#95A5A6"; // Grigio (No Data)
+  if (!countryHistory) return "#f2f2f2"; // Grigio (No Data)
 
   const availableYears = Object.keys(countryHistory).map(Number).sort((a, b) => a - b);
   const activeYear = availableYears.filter(y => y <= year).pop();
 
-  if (!activeYear) return "#95A5A6";
+  if (!activeYear) return "#f2f2f2";
 
   const details = countryHistory[activeYear];
 
   if (topic === 'marriage') {
     if (details.marriage_same_sex && details.adoption_marriage) {
-      return "#2ECC71"; // Verde acceso (Piena eguaglianza)
+      return "#25e575"; // Verde acceso (Piena eguaglianza)
     }
 
     let passed = 0;
@@ -197,7 +197,7 @@ function CalculateColor(countryName, year, topic) {
   } 
   else {
     if (details.adoption_marriage && details.marriage_same_sex) {
-      return "#2ECC71"; // Verde acceso
+      return "#25e575"; // Verde acceso
     }
 
     let passed = 0;
@@ -311,11 +311,19 @@ function renderDetailSection() {
   `;
 
   items.forEach(item => {
-    const iconClass = item.active ? 'check' : 'cross';
+    const statusClass = item.active ? 'granted' : 'not-granted';
+    
+    // Se è concesso usa un simbolo/icona verde, altrimenti usa la tua immagine Flaticon
+    const iconMarkup = item.active 
+      ? `<img src="assets/icon-yes.png" alt="Not granted" class="badge-icon-img" />>` 
+      : `<img src="assets/icon-no.png" alt="Not granted" class="badge-icon-img" />`;
+
     html += `
-      <div class="detail-badge">
+      <div class="detail-badge ${statusClass}">
         <span>${item.label}</span>
-        <span class="badge-icon ${iconClass}"></span>
+        <div class="badge-icon-wrapper">
+          ${iconMarkup}
+        </div>
       </div>
     `;
   });
