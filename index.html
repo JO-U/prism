@@ -157,10 +157,48 @@
                 <div id="tooltip" class="tooltip"></div>
 
                 <!-- Detailed Section below Map -->
-                <h2 id="details-header" class="details-header">Select a country on the map</h2>
                 <div id="details-section" style="display: none;"></div>                </div>
             </div>
-           </div>
+
+
+            <div id="vis3">
+                <section id="incidents-visualization-section">
+                <h2>Violent incidents, threats and hate speech</h2>
+                <p>The Organization for Security and Co-operation in Europe (OSCE) offers information on 57 States from Europe, Central Asia and North America. We focused on hate crimes reported in European countries in the years from 2016 to 2023.</p>
+                <p>The line chart below shows how the number of incidents increases or decreases through the years in individual countries, while a map is provided as a comparison tool. The line chart also indicates the adoption of legislation against hate crimes and hate speech.</p>
+                <p>These representations are based on the data reported by OSCE: instances of zero cases of hate crimes reported is due countries not reporting data to OSCE Office for Democratic Institutions and Human Rights (ODIHR).</p>
+                <p>How to use: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+                <section id="incidents-visualization-section">
+  <!-- Navigazione a schede/tab -->
+  <div class="vis2-tabs">
+    <button id="tab-incidents-country" class="vis2-tab-btn inactive">Incidents per Country</button>
+    <button id="tab-map-timeline" class="vis2-tab-btn active">Map and Timeline</button>
+  </div>
+
+                <div class="vis2-content-wrapper">
+                    <!-- VISTA 1: Mappa e Timeline -->
+                    <div id="view-map-timeline" class="vis2-view-container active">
+                    <div class="map-layout-wrapper">
+                        <div class="timeline-container">
+                        <div id="incidents-years-list" class="years-list"></div>
+                        <div class="timeline-track">
+                            <div id="incidents-slider-thumb" class="slider-thumb"></div>
+                        </div>
+                        </div>
+                        <div id="incidents-map-container" class="map-box"></div>
+                    </div>
+                    </div>
+
+                    <!-- VISTA 2: Grafico a linee per Paese -->
+                    <div id="view-incidents-chart" class="vis2-view-container" style="display: none;">
+                    <div id="incidents-linechart-container"></div>
+                    </div>
+                </div>
+
+                <!-- Tooltip fluttuante -->
+                <div id="incidents-tooltip" class="custom-tooltip" style="opacity: 0;"></div>
+                </section>
+            </div>
             <footer>
                 <h3>prism</h3>
                 <div class="right">
@@ -175,9 +213,11 @@
                 </div>
             </footer>
 			<script src="https://d3js.org/d3.v7.min.js"></script>
+            <script src="app.js"></script>
+
             <script src="js/vis1.js"></script>
             <script src="js/vis2.js"></script>
-            <script src="vis3.js"></script>
+            <script src="js/vis3.js"></script>
         </main>
     </body>
 </html>

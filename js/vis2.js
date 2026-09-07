@@ -1,4 +1,4 @@
-// Anni supportati dalla timeline
+// Anni
 const years = [
   2024, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 
   2009, 2008, 2007, 2006, 2005, 2004, 2003, 2001, 
@@ -6,11 +6,11 @@ const years = [
 ];
 
 let selectedYear = 1989;
-let currentTopic = 'marriage'; // 'marriage' o 'adoption'
+let currentTopic = 'marriage'; // o 'adoption'
 let selectedCountryCode = null;
 let selectedCountryName = null;
 
-// Strutture dati globali
+// dati globali
 let normalizedData = {}; // { CountryName: { Year: { ...dettagli... } } }
 let countryNameToId = {};  // Mappatura Nomi paesi -> Codici ISO Numerici per D3
 
@@ -20,7 +20,7 @@ const countryIsoMapping = {
   "Belgium": "056", "Bosnia and Herzegovina": "070", "Bulgaria": "100",
   "Croatia": "191", "Cyprus": "196", "Czech Republic": "203", "Czechia": "203",
   "Denmark": "208", "Estonia": "233", "Finland": "246", "France": "250",
-  "Germany": "276", "Greece": "300", "Hungary": "348", "Iceland": "352",
+  "Germany": "276", "Greece": "300", "Hungary": "348",
   "Ireland": "372", "Italy": "380", "Latvia": "428", "Liechtenstein": "438",
   "Lithuania": "440", "Luxembourg": "442", "Malta": "470", "Moldova": "498",
   "Monaco": "492", "Montenegro": "499", "Netherlands": "528", "North Macedonia": "807",
@@ -74,8 +74,7 @@ const svg = d3.select("#map-container")
 const projection = d3.geoAzimuthalEqualArea()
   .rotate([-10, -52, 0])
   .scale(780)
-  .translate([width / 2 + 80, height / 2 + 30]);
-
+  .translate([width / 2, height / 2 + 30]);
 const path = d3.geoPath().projection(projection);
 
 // Caricamento HTTP nativo dei file CSV e del file Geografico TopoJSON
@@ -89,10 +88,14 @@ Promise.all([
   initTimeline();
 
   const countries = topojson.feature(geoData, geoData.objects.countries);
+  const europeanCountryCodes = new Set(Object.values(countryIsoMapping));
+  const europeanFeatures = countries.features.filter(country =>
+    europeanCountryCodes.has(String(country.id).padStart(3, '0'))
+  );
 
   // Renderizza la mappa europea
   svg.selectAll("path")
-    .data(countries.features)
+    .data(europeanFeatures)
     .enter()
     .append("path")
     .attr("d", path)
@@ -315,7 +318,7 @@ function renderDetailSection() {
     
     // Se è concesso usa un simbolo/icona verde, altrimenti usa la tua immagine Flaticon
     const iconMarkup = item.active 
-      ? `<img src="assets/icon-yes.png" alt="Not granted" class="badge-icon-img" />>` 
+      ? `<img src="assets/icon-yes.png" alt="Not granted" class="badge-icon-img" />` 
       : `<img src="assets/icon-no.png" alt="Not granted" class="badge-icon-img" />`;
 
     html += `
