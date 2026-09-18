@@ -2,7 +2,9 @@
   // --- VARIABILI E STATO PRIVATI ---
   const years = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
   let selectedYear = 2016;
+  let selectedCountryForChart = "Italy"; // Stato predefinito per il grafico a linee
   let incidentsData = {}; // Struttura: { "Iceland": { 2016: 12, 2017: 5, ... } }
+  let lawsData = {};      // Struttura: { "Albania": [ { year: 2013, type: "Hate Crime Law", title: "Criminal Code", color: "#ef4444" }, ... ] }
   let colorScale;
 
   const countryIsoMapping = {
@@ -33,11 +35,11 @@
     .style("height", "100%")
     .style("display", "block");
 
-  // Proiezione ingrandita (.scale(1100)) e centrata sull'Europa
+  // Proiezione ingrandita (.scale(780)) e centrata sull'Europa
   const projection = d3.geoAzimuthalEqualArea()
     .rotate([-10, -52, 0])
     .scale(780)
-    .translate([width / 2, height / 2+30]);
+    .translate([width / 2, height / 2 + 30]);
 
   const path = d3.geoPath().projection(projection);
 
@@ -86,13 +88,15 @@
       .interpolator(d3.interpolateYlOrRd);
   }
 
-  // --- CARICAMENTO DATI E RENDERING MAPPA ---
+  // --- CARICAMENTO DATI E RENDERING MAPPA (MODIFICATO CON PROMISE PER 2 CSV) ---
   Promise.all([
     d3.csv("data/DS5/hate_crimes.csv"),
+    d3.csv("data/DS6/laws_against_lgbtq_hate_crimes.csv"), // <-- AGGIUNTO: Percorso del CSV delle leggi
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json")
-  ]).then(([rawCsv, geoData]) => {
+  ]).then(([rawCsvIncidents, rawCsvLaws, geoData]) => {
 
-    processIncidentsCSV(rawCsv);
+    processIncidentsCSV(rawCsvIncidents);
+    processLawsCSV(rawCsvLaws); // <-- AGGIUNTO: Parser per le leggi
     setupColorScale();
     initTimeline();
     initTabs();
@@ -142,8 +146,40 @@
 
     setYear(selectedYear);
   }).catch(err => {
-    console.error("Errore nel caricamento della Mappa 2:", err);
+    console.error("Errore nel caricamento dei file:", err);
   });
+
+  // --- PARSER NUOVO CSV DELLE LEGGI ---
+  function processLawsCSV(data) {
+    data.forEach(row => {
+      const country = (row["Country"] || "").trim();
+      if (!country) return;
+
+      if (!lawsData[country]) lawsData[country] = [];
+
+      // Hate Crime Law (Rosso)
+      const crimeYear = parseInt(row["Hate crime law"], 10);
+      if (!isNaN(crimeYear)) {
+        lawsData[country].push({
+          year: crimeYear,
+          type: "Hate Crime Law",
+          title: row["Hate crime law name"] || "Legge contro crimini d'odio",
+          color: "#ef4444"
+        });
+      }
+
+      // Hate Speech Law (Arancione)
+      const speechYear = parseInt(row["Hate speech law"], 10);
+      if (!isNaN(speechYear)) {
+        lawsData[country].push({
+          year: speechYear,
+          type: "Hate Speech Law",
+          title: row["Hate Speech law name"] || "Legge sul discorso d'odio",
+          color: "#f59e0b"
+        });
+      }
+    });
+  }
 
   // --- AGGIORNAMENTO COLORE DELLA MAPPA IN BASE ALL'ANNO ---
   function updateMapFill() {
@@ -162,13 +198,53 @@
     return colorScale(count);
   }
 
-  // --- RENDERING GRAFICO A LINEE (INCIDENTS PER COUNTRY) ---
+  // --- RENDERING GRAFICO A LINEE CON SELETTORE E LEGGI (MODIFICATO) ---
   function renderLineChart() {
     const container = d3.select("#incidents-linechart-container");
     if (container.empty()) return;
     container.html("");
 
-    const margin = { top: 30, right: 120, bottom: 40, left: 50 };
+    const countriesList = Object.keys(incidentsData).sort();
+    if (countriesList.length === 0) return;
+
+    if (!countriesList.includes(selectedCountryForChart)) {
+      selectedCountryForChart = countriesList[0];
+    }
+
+    // 1. DROPDOWN SELEZIONE PAESE
+    const selectorContainer = container.append("div")
+      .style("margin-bottom", "15px")
+      .style("display", "flex")
+      .style("align-items", "center")
+      .style("gap", "10px");
+
+    selectorContainer.append("label")
+      .attr("for", "country-select")
+      .style("font-weight", "bold")
+      .text("Seleziona Stato:");
+
+    const select = selectorContainer.append("select")
+      .attr("id", "country-select")
+      .style("padding", "6px 12px")
+      .style("border-radius", "4px")
+      .style("border", "1px solid #ccc")
+      .style("font-size", "14px");
+
+    select.selectAll("option")
+      .data(countriesList)
+      .enter()
+      .append("option")
+      .attr("value", d => d)
+      .property("selected", d => d === selectedCountryForChart)
+      .text(d => d);
+
+    select.on("change", function () {
+      selectedCountryForChart = this.value;
+      renderLineChart();
+    });
+
+    // 2. DIMENSIONI E SVG
+    const margin = { top: 40, right: 40, bottom: 50, left: 60 };
     const containerWidth = container.node().getBoundingClientRect().width || 800;
     const chartWidth = containerWidth - margin.left - margin.right;
     const chartHeight = 400 - margin.top - margin.bottom;
@@ -181,71 +257,116 @@
 
     const sortedYears = years.slice().sort((a, b) => a - b);
 
+    const countrySeries = sortedYears.map(yr => ({
+      year: yr,
+      count: incidentsData[selectedCountryForChart]?.[yr] || 0
+    }));
+
+    // 3. SCALE E ASSI
     const x = d3.scalePoint()
       .domain(sortedYears)
       .range([0, chartWidth]);
 
-    let maxIncidents = 0;
-    Object.keys(incidentsData).forEach(country => {
-      sortedYears.forEach(y => {
-        if (incidentsData[country][y] > maxIncidents) {
-          maxIncidents = incidentsData[country][y];
-        }
-      });
-    });
+    const maxVal = d3.max(countrySeries, d => d.count) || 10;
 
     const y = d3.scaleLinear()
-      .domain([0, maxIncidents || 10])
+      .domain([0, maxVal * 1.15])
       .range([chartHeight, 0])
       .nice();
 
     svgChart.append("g")
       .attr("transform", `translate(0,${chartHeight})`)
       .call(d3.axisBottom(x))
-      .attr("color", "#666");
+      .style("font-size", "12px");
 
     svgChart.append("g")
-      .call(d3.axisLeft(y).ticks(5))
-      .attr("color", "#666");
+      .call(d3.axisLeft(y).ticks(6))
+      .style("font-size", "12px");
 
+    // 4. LINEA INCIDENTI
     const line = d3.line()
       .x(d => x(d.year))
       .y(d => y(d.count))
       .curve(d3.curveMonotoneX);
 
-    const countriesList = Object.keys(incidentsData);
-    const palette = d3.scaleOrdinal(d3.schemeCategory10);
+    svgChart.append("path")
+      .datum(countrySeries)
+      .attr("fill", "none")
+      .attr("stroke", "#6366f1")
+      .attr("stroke-width", 3)
+      .attr("d", line);
 
-    countriesList.forEach((country, index) => {
-      const countrySeries = sortedYears.map(yr => ({
-        year: yr,
-        count: incidentsData[country][yr] || 0
-      }));
+    // 5. PUNTI SULLA LINEA
+    svgChart.selectAll(".data-dot")
+      .data(countrySeries)
+      .enter()
+      .append("circle")
+      .attr("class", "data-dot")
+      .attr("cx", d => x(d.year))
+      .attr("cy", d => y(d.count))
+      .attr("r", 5)
+      .attr("fill", "#6366f1")
+      .style("cursor", "pointer")
+      .on("mouseover", function (event, d) {
+        tooltip.transition().duration(100).style("opacity", 1);
+        tooltip.html(`<strong>${selectedCountryForChart} (${d.year})</strong>: ${d.count} incidenti`)
+          .style("left", (event.pageX + 12) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", function () {
+        tooltip.transition().duration(200).style("opacity", 0);
+      });
 
-      svgChart.append("path")
-        .datum(countrySeries)
-        .attr("fill", "none")
-        .attr("stroke", palette(index))
-        .attr("stroke-width", 2)
-        .attr("d", line);
+    // 6. SOVRAPPOSIZIONE MARCATORI LEGGI (PROVVEDIMENTI)
+    const countryLaws = lawsData[selectedCountryForChart] || [];
 
-      svgChart.selectAll(`.dot-${index}`)
-        .data(countrySeries)
-        .enter()
-        .append("circle")
-        .attr("cx", d => x(d.year))
-        .attr("cy", d => y(d.count))
-        .attr("r", 4)
-        .attr("fill", palette(index))
-        .on("mouseover", function (event, d) {
-          tooltip.transition().duration(100).style("opacity", 1);
-          tooltip.html(`<strong>${country}</strong> (${d.year}): ${d.count} incidenti`)
-            .style("left", (event.pageX + 12) + "px")
-            .style("top", (event.pageY - 28) + "px");
-        })
-        .on("mouseout", function () {
-          tooltip.transition().duration(200).style("opacity", 0);
-        });
+    countryLaws.forEach((law, idx) => {
+      if (!sortedYears.includes(law.year)) return; // Disegna solo se rientra nel range di anni del grafico (2016-2023)
+
+      const xPos = x(law.year);
+      const yOffset = 15 + (idx % 2) * 22; // Sfalsa se ci sono più leggi nello stesso anno
+
+      // Linea verticale tratteggiata
+      svgChart.append("line")
+        .attr("x1", xPos)
+        .attr("y1", 0)
+        .attr("x2", xPos)
+        .attr("y2", chartHeight)
+        .attr("stroke", law.color)
+        .attr("stroke-width", 1.8)
+        .attr("stroke-dasharray", "4,4");
+
+      // Badge con simbolo §
+      const badge = svgChart.append("g")
+        .attr("transform", `translate(${xPos}, ${yOffset})`)
+        .style("cursor", "pointer");
+
+      badge.append("circle")
+        .attr("r", 9)
+        .attr("fill", law.color);
+
+      badge.append("text")
+        .attr("text-anchor", "middle")
+        .attr("dy", "3px")
+        .attr("fill", "#ffffff")
+        .style("font-size", "9px")
+        .style("font-weight", "bold")
+        .text("§");
+
+      // Tooltip al passaggio del mouse
+      badge.on("mouseover", function (event) {
+        tooltip.transition().duration(100).style("opacity", 1);
+        tooltip.html(`
+          <div style="max-width: 220px;">
+            <strong style="color: ${law.color};">${law.type} (${law.year})</strong><br/>
+            <strong>${law.title}</strong>
+          </div>
+        `)
+          .style("left", (event.pageX + 12) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      }).on("mouseout", function () {
+        tooltip.transition().duration(200).style("opacity", 0);
+      });
     });
   }
 
